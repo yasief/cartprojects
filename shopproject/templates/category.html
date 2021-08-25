@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{category.desc|truncatewords:155}}
+    {% else %}
+        Welcome to CARTZONE Where you can buy the things in your mind..
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} - CARTZONE
+    {% else %}
+        Satisfy the needs right now CARTZONE
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+    <div>
+        <div class="row my_row_class">
+            <div class="mx-auto">
+            <p><a class="collections" href="{% url 'shopapp:allProdCat' %">Our Collections</a></p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+<div class="mx-auto">
+    {% if category %}
+    <img class="my_image" src="{{category.img.url}}" alt="{{category.name}}">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-center">{{category.desc}}</p>
+</div>
+    {% else %}
+<div>
+    <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products">
+</div>
+<br>
+<div>
+    <h1 class="text-center collection_style">Our Collections</h1>
+    <p class="text-justify">Magnum gloss ducunt ad gabalium.Ho-ho-ho! adventure of pestilence.Lunar, senior species pedantically teleport a
+        neutral, final pathway.Sunt eleateses magicae velox, teres hilotaees.Magnum gloss ducunt ad gabalium.Ho-ho-ho! adventure of pestilence.Lunar, senior species pedantically teleport a
+        neutral, final pathway.Sunt eleateses magicae velox, teres hilotaees.Magnum gloss ducunt ad gabalium.Ho-ho-ho! adventure of pestilence.Lunar, senior species pedantically teleport a
+        neutral, final pathway.Sunt eleateses magicae velox, teres hilotaees</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx-auto" >
+        {% for product in products.object_list %}
+        <div class="my bottom_margin col-9 col-sm-12 col-md-4 col-lg-4" >
+            <div class="card text-center bg-dark" style="min-width:18rem;height:100%" >
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                <div class="card-body"><br>
+                    <h4>{{product.name}}</h4>
+                    {% load humanize %}
+                    <p>₹ {{product.price|intcomma}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range%}
+                <a href="?page={{pg}}" class="btn btn-dark btn=sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+           {% endif %}
+    </div>
+    <br>
+</div>
+
+{% endblock %}
